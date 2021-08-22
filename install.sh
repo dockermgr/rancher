@@ -68,21 +68,16 @@ if docker ps -a | grep -qs "$APPNAME"; then
   sudo docker restart "$APPNAME" &>/dev/null
 else
   sudo docker run -d \
-    --name="$APPNAME" \
-    --hostname "$APPNAME" \
-    --restart=unless-stopped \
-    --privileged \
-    -e TZ=${TIMEZONE:-America/New_York} \
-    -v "$DATADIR/data":/data:z \
-    -p 8085:80 \
-    -p 8086:443 \
-    "$DOCKER_HUB_URL" &>/dev/null
+  --restart=unless-stopped \
+  -p 84:80 \
+  -p 8444:443 \
+  --privileged \
+  "$DOCKER_HUB_URL" &>/dev/null
 fi
 fi
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 if docker ps -a | grep -qs "$APPNAME"; then
-  printf_blue "Service is available at: http://$HOSTNAME:8085"
-  printf_blue "Service is available at: https://$HOSTNAME:8086"
+  printf_blue "Service is available at: http://$HOSTNAME:84"
 else
   false
 fi
