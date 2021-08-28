@@ -75,20 +75,19 @@ if [ -f "$INSTDIR/docker-compose.yml" ] && cmd_exists docker-compose; then
   fi
 else
   if docker ps -a | grep -qsw "$APPNAME"; then
-    __sudo docker pull "$DOCKER_HUB_URL" &>/dev/null
-    __sudo docker restart "$APPNAME" &>/dev/null
-  else
-    __sudo docker run -d \
-      --name="$APPNAME" \
-      --hostname "$APPNAME" \
-      --restart=unless-stopped \
-      --privileged \
-      -e TZ="$RANCHER_SERVER_TIMEZONE" \
-      -v "$DATADIR/data":/data:z \
-      -p "$RANCHER_SERVER_PORT":80 \
-      -p 8443:443 \
-      "$DOCKER_HUB_URL" &>/dev/null
+    __sudo docker stop "$APPNAME" &>/dev/null
+    __sudo docker rm -f "$APPNAME" &>/dev/null
   fi
+  __sudo docker run -d \
+    --name="$APPNAME" \
+    --hostname "$APPNAME" \
+    --restart=unless-stopped \
+    --privileged \
+    -e TZ="$RANCHER_SERVER_TIMEZONE" \
+    -v "$DATADIR/data":/data:z \
+    -p "$RANCHER_SERVER_PORT":80 \
+    -p 8443:443 \
+    "$DOCKER_HUB_URL" &>/dev/null
 fi
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 if docker ps -a | grep -qs "$APPNAME"; then
