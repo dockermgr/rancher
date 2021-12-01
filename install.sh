@@ -197,7 +197,8 @@ if docker ps -a | grep -qs "$APPNAME"; then
   printf_blue "DATADIR in $DATADIR"
   printf_cyan "Installed to $INSTDIR"
   [[ -n "$SERVER_PORT" ]] && printf_blue "Service is running on: $SERVER_IP:$SERVER_PORT"
-  [[ -n "$SERVER_PORT" ]] && printf_blue "and should be available at: http://$SERVER_LISTEN:$SERVER_PORT or http://$SERVER_HOST:$SERVER_PORT"
+  [[ -n "$SERVER_PORT" ]] && printf_blue "and should be available at: http://$SERVER_LISTEN:$SERVER_PORT_OTHER or http://$SERVER_HOST:$SERVER_PORT_OTHER"
+  [[ -n "$SERVER_PORT" ]] && printf_red "If you can not get password then run: docker exec -ti $APPNAME reset-password"
   [[ -z "$SERVER_PORT" ]] && printf_yellow "This container does not have a web interface"
 else
   printf_error "Something seems to have gone wrong with the install"
