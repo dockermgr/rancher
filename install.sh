@@ -152,7 +152,6 @@ else
     --restart=always \
     --privileged \
     -e TZ="$SERVER_TIMEZONE" \
-    -e CATTLE_BOOTSTRAP_PASSWORD="${PASSWORD:-password}" \
     -v "$DATADIR/data":/var/lib/rancher \
     -p $SERVER_LISTEN:$SERVER_PORT:$SERVER_PORT_INT \
     -p $SERVER_LISTEN:$SERVER_PORT_OTHER:$SERVER_PORT_OTHER_INT \
