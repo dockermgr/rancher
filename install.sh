@@ -78,6 +78,7 @@ SERVER_PORT_ADMIN_INT="${SERVER_PORT_ADMIN_INT:-}"
 SERVER_PORT_OTHER="${SERVER_PORT_OTHER:-15003}"
 SERVER_PORT_OTHER_INT="${SERVER_PORT_OTHER_INT:-443}"
 SERVER_TIMEZONE="${TZ:-${TIMEZONE:-America/New_York}}"
+SERVER_SSL_CA="/etc/ssl/CA/CasjaysDev/certs/ca.crt"
 SERVER_SSL_CRT="/etc/ssl/CA/CasjaysDev/certs/localhost.crt"
 SERVER_SSL_KEY="/etc/ssl/CA/CasjaysDev/private/localhost.key"
 [[ -f "$SERVER_SSL_CRT" ]] && [[ -f "$SERVER_SSL_KEY" ]] && SERVER_SSL="true"
@@ -148,10 +149,13 @@ else
   __sudo docker run -d \
     --name="$APPNAME" \
     --hostname "$SERVER_HOST" \
-    --restart=unless-stopped \
+    --restart=always \
     --privileged \
     -e TZ="$SERVER_TIMEZONE" \
     -v "$DATADIR/data":/var/lib/rancher \
+    -v "$SERVER_SSL_KEY":/etc/rancher/ssl/key.pem \
+    -v "$SERVER_SSL_CRT":/etc/rancher/ssl/cert.pem \
+    -v "$SERVER_SSL_CA":/etc/rancher/ssl/cacerts.pem \
     -p $SERVER_LISTEN:$SERVER_PORT:$SERVER_PORT_INT \
     -p $SERVER_LISTEN:$SERVER_PORT_OTHER:$SERVER_PORT_OTHER_INT \
     "$HUB_URL" &>/dev/null
