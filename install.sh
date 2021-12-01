@@ -153,9 +153,6 @@ else
     --privileged \
     -e TZ="$SERVER_TIMEZONE" \
     -v "$DATADIR/data":/var/lib/rancher \
-    -v "$SERVER_SSL_KEY":/etc/rancher/ssl/key.pem \
-    -v "$SERVER_SSL_CRT":/etc/rancher/ssl/cert.pem \
-    -v "$SERVER_SSL_CA":/etc/rancher/ssl/cacerts.pem \
     -p $SERVER_LISTEN:$SERVER_PORT:$SERVER_PORT_INT \
     -p $SERVER_LISTEN:$SERVER_PORT_OTHER:$SERVER_PORT_OTHER_INT \
     "$HUB_URL" &>/dev/null
